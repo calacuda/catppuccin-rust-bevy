@@ -88,7 +88,7 @@ pub enum FlavorName {
     /// The light flavor.
     Latte,
     /// The lightest dark flavor.
-    #[cfg_attr(feature = "serde", serde(rename = "Frappé"))]
+    #[cfg_attr(feature = "serde", serde(alias = "Frappé"))]
     Frappe,
     /// The medium dark flavor.
     Macchiato,
@@ -150,6 +150,8 @@ pub struct Color {
     pub rgb: Rgb,
     /// The color represented as individual hue, saturation, and lightness channels.
     pub hsl: Hsl,
+    // /// The color represented as a Bevy Vec3 (RGB).
+    // pub vec_3: Vec3,
 }
 
 /// A flavor is a collection of colors. Catppuccin has four flavors; Latte,
@@ -456,6 +458,40 @@ impl From<(u8, u8, u8)> for Hex {
 impl From<(f64, f64, f64)> for Hsl {
     fn from((h, s, l): (f64, f64, f64)) -> Self {
         Self { h, s, l }
+    }
+}
+
+// impl From<(f64, f64, f64)> for Vec3 {
+//     fn from(value: (f64, f64, f64)) -> Self {
+//         Vec3 {
+//             x: value.0 as f32,
+//             y: value.1 as f32,
+//             z: value.2 as f32,
+//         }
+//     }
+// }
+
+// impl Into<Vec3> for Color {
+//     fn into(self) -> Vec3 {
+//         let color = self.rgb;
+//
+//         Vec3 {
+//             x: color.r as f32 / u8::MAX as f32,
+//             y: color.g as f32 / u8::MAX as f32,
+//             z: color.b as f32 / u8::MAX as f32,
+//         }
+//     }
+// }
+
+impl Into<bevy::color::Color> for Color {
+    fn into(self) -> bevy::color::Color {
+        let color = self.rgb;
+
+        bevy::color::Color::Srgba(bevy::color::Srgba::rgb(
+            color.r as f32 / u8::MAX as f32,
+            color.g as f32 / u8::MAX as f32,
+            color.b as f32 / u8::MAX as f32,
+        ))
     }
 }
 

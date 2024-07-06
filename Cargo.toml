@@ -21,6 +21,7 @@ clippy.nursery = "warn"
 
 [dependencies]
 ansi_term = { version = "0.12.1", optional = true }
+bevy = { version = "0.14.0", default-features = false, features = ["bevy_color"] }
 css-colors = { version = "1.0.1", optional = true }
 ratatui = { version = "0.26.3", optional = true }
 serde = { version = "1.0.203", features = ["derive"], optional = true }
